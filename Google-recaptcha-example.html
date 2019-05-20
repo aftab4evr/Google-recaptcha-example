@@ -1,0 +1,37 @@
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+</head>
+<body>
+<form>
+  <div class="g-recaptcha" data-sitekey="YOUR-SITE-KEY"></div>
+  <input type="button" onclick="checkRecaptcha();" value="submit"></input>
+</form>
+<script> 
+function checkRecaptcha() {
+  var response = grecaptcha.getResponse();
+  if(response.length == 0) { 
+    //reCaptcha not verified
+    alert("Google Captch InValid"); 
+  }
+  else {
+    //reCaptch verified
+    alert("Google Captch Valid"); 
+  }
+}
+// implement on the backend
+function backend_API_challenge() {
+    var response = grecaptcha.getResponse();
+    $.ajax({
+        type: "POST",
+        url: 'https://www.google.com/recaptcha/api/siteverify',
+        data: {"secret" : "YOUR-SECRET-KEY", "response" : response, "remoteip":"127.0.0.1"},
+        contentType: 'application/x-www-form-urlencoded',
+        success: function(data) { console.log(data); }
+    });
+}
+</script>
+</body>
+</html>
